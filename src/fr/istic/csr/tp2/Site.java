@@ -46,6 +46,7 @@ private int numero = 0;
 
     public synchronized void destocker(int nombreVelo,String nomClient, Camion camion ) {
         while ( stockActuelle-nombreVelo < 0 ){
+            //System.out.println("Le client "+nomClient+" est en attente sur site S"+numero+" !!  pour emprunter un velo. Aucun velo disponible sur le site actuellement !!");
             try {  this.wait(); } catch (InterruptedException e) { e.printStackTrace(); }
         }
         int ancienStock = this.getStockActuelle() ;
@@ -54,7 +55,7 @@ private int numero = 0;
             int nouvelleChargeCamion = camion.getCharge()+nombreVelo ;
             System.out.println("Le camion a visité  le site S"+this.getNumero()+". Ancien stock: "+ancienStock+". Nouveau stock:"+this.getStockActuelle()+". STOCK-INIT:"+this.STOCK_INIT+". STOCK-MAX: "+this.STOCK_MAX+". BORNE-INF: "+this.BORNE_INF+". BORNE-SUP: "+this.BORNE_SUP+".");
             System.out.println("Info du camion: ancienne charge =>"+camion.getCharge() +" ,  nouvelle charge => "+nouvelleChargeCamion+" ");
-        }else { //System.out.println("Le client "+nomClient+" emprunte sur le site S"+this.getNumero()+". AncienStock: "+ancienStock+"  Le stock actuel du site : "+this.getStockActuelle());
+        }else { System.out.println("Le client "+nomClient+" emprunte sur le site S"+this.getNumero()+". AncienStock: "+ancienStock+".  Le stock actuel du site : "+this.getStockActuelle());
         }
 
         this.notifyAll();
@@ -74,7 +75,7 @@ private int numero = 0;
         }else {
             //Après une restition de velo, on incremente donc le nombre de velo restitués.
             setNbRestitutionActuelle() ;
-           System.out.println("Le client "+nomClient+" restitue sur le site S"+this.getNumero()+". AncienStock: "+ancienStock+"  Le stock actuel du site : "+this.getStockActuelle());
+           System.out.println("Le client "+nomClient+" restitue sur le site S"+this.getNumero()+". AncienStock: "+ancienStock+".  Le stock actuel du site : "+this.getStockActuelle());
         }
         this.notifyAll();
     }
