@@ -7,7 +7,7 @@ package fr.istic.csr.tp2;
 public class Main {
 
     public static void main(String[] args) {
-       SystemeEmprunt system =  new SystemeEmprunt();
-       system.fonctionner();
+       //SystemeEmprunt system =  ;
+        new SystemeEmprunt().fonctionner();
     }
 }

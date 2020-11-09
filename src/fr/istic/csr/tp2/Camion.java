@@ -2,7 +2,7 @@ package fr.istic.csr.tp2;
 
 public class Camion extends Thread {
     private Site[] tousLesSite; // L'ensemble des site à visiter
-    private int charge = 0 ; //Le nombre de velot trasportés par le camion
+    private int charge = 30 ; //Le nombre de velot trasportés par le camion
     private int nbClients = 0 ; //Le nombre de client du système
     private int nbClientServis = 0 ; //Le nombre de client ayant restitué leur velo
 
