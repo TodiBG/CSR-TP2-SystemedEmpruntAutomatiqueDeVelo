@@ -55,7 +55,7 @@ private int numero = 0;
             int nouvelleChargeCamion = camion.getCharge()+nombreVelo ;
             System.out.println("Le camion a visité  le site S"+this.getNumero()+". Ancien stock: "+ancienStock+". Nouveau stock:"+this.getStockActuelle()+". STOCK-INIT:"+this.STOCK_INIT+". STOCK-MAX: "+this.STOCK_MAX+". BORNE-INF: "+this.BORNE_INF+". BORNE-SUP: "+this.BORNE_SUP+".");
             System.out.println("Info du camion: ancienne charge =>"+camion.getCharge() +" ,  nouvelle charge => "+nouvelleChargeCamion+" ");
-        }else { System.out.println("Le client "+nomClient+" emprunte sur le site S"+this.getNumero()+". AncienStock: "+ancienStock+".  Le stock actuel du site : "+this.getStockActuelle());
+        }else { System.out.println("Le client "+nomClient+" emprunte sur le site S"+this.getNumero()+". AncienStock: "+ancienStock+". Le stock actuel du site : "+this.getStockActuelle());
         }
 
         this.notifyAll();
@@ -79,5 +79,45 @@ private int numero = 0;
         }
         this.notifyAll();
     }
+    
+    public synchronized void equilibrSelf(Camion camion){
+
+        if(this.getStockActuelle() < this.BORNE_INF ){
+            int aStcker = this.STOCK_INIT - this.getStockActuelle() ;
+            if( camion.getCharge() >= aStcker ){
+                //Remettre le stock au niveau initial
+                this.stocker(aStcker,"",camion);
+                camion.changeCharge(-aStcker)  ;
+            }else {
+                //Sinon ramener le stock au niveau niveau le plus proche possible du stock initial
+                this.stocker(camion.getCharge(),"",camion);
+                camion.changeCharge(-camion.getCharge()) ;
+            }
+
+        }else if(this.getStockActuelle() > this.BORNE_SUP ){
+            int aStcker = this.getStockActuelle() - this.STOCK_INIT ;
+            this.destocker(aStcker,"",camion);
+            camion.changeCharge(aStcker) ;
+        }
+        //Avec cette methode on est sûr ne pas pouvoir depasser le  STOCK_MAX
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 }

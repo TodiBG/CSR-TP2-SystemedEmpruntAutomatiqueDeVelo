@@ -13,33 +13,17 @@ public class Camion extends Thread {
     }
 
     public int getCharge(){ return charge ; }
+    public int changeCharge(int valeur){ return charge += valeur ; }
+
 
 
     /*Permet d'équilibrer le stock d'un site
     le synchronized pour ne pas que leSiteCourant.stockActuelle ne soit modifié par quelqu'un d'autre pendant qu'on le manipule
      */
-    private synchronized void visiter(Site leSiteCourant) {
+    private void visiter(Site leSiteCourant) {
         //Compter le nombre global de clients servis
         nbClientServis +=  leSiteCourant.getNbNouvelRestitution();
-
-        if(leSiteCourant.getStockActuelle() < leSiteCourant.BORNE_INF ){
-            int aStcker = leSiteCourant.STOCK_INIT - leSiteCourant.getStockActuelle() ;
-            if( charge >= aStcker ){
-                //Remettre le stock au niveau initial
-                leSiteCourant.stocker(aStcker,"",this);
-                charge -= aStcker ;
-            }else {
-                //Sinon ramener le stock au niveau niveau le plus proche possible du stock initial
-                leSiteCourant.stocker(charge,"",this);
-                charge = 0 ;
-            }
-
-        }else if(leSiteCourant.getStockActuelle() > leSiteCourant.BORNE_SUP ){
-            int aStcker = leSiteCourant.getStockActuelle() - leSiteCourant.STOCK_INIT ;
-                leSiteCourant.destocker(aStcker,"",this);
-                charge += aStcker ;
-        }
-        //Avec cette methode on est sûr ne pas pouvoir depasser le  STOCK_MAX
+        leSiteCourant.equilibrSelf(this) ;
     }
 
     //Permet d'équilibrer le stock de chaque site
